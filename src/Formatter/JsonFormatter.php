@@ -2,8 +2,6 @@
 
 namespace Equip\Formatter;
 
-use Equip\Adr\PayloadInterface;
-
 class JsonFormatter implements FormatterInterface
 {
     public static function accepts(): array
@@ -16,9 +14,9 @@ class JsonFormatter implements FormatterInterface
         return 'application/json';
     }
 
-    public function body(PayloadInterface $payload): string
+    public function format(mixed $content): string
     {
-        return json_encode($payload->getOutput(), $this->options());
+        return json_encode($content, $this->options());
     }
 
     protected function options(): int
