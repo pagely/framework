@@ -6,25 +6,17 @@ use InvalidArgumentException;
 
 class EnvException extends InvalidArgumentException
 {
-    /**
-     * @param string $path
-     *
-     * @return static
-     */
-    public static function invalidFile($path)
+    public static function invalidFile(string $path): EnvException
     {
-        return new static(sprintf(
+        return new EnvException(sprintf(
             'Environment file `%s` does not exist or is not readable',
             $path
         ));
     }
 
-    /**
-     * @return static
-     */
-    public static function detectionFailed()
+    public static function detectionFailed(): EnvException
     {
-        return new static(
+        return new EnvException(
             'Unable to automatically detect the location of a .env file'
         );
     }

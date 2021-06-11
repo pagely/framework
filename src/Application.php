@@ -8,7 +8,7 @@ use Equip\Directory;
 use Equip\Middleware\MiddlewareSet;
 use Relay\Relay;
 
-class Application
+final class Application
 {
     /**
      * Create a new application
@@ -23,29 +23,18 @@ class Application
         Injector $injector = null,
         ConfigurationSet $configuration = null,
         MiddlewareSet $middleware = null
-    ) {
-        return new static($injector, $configuration, $middleware);
+    ): Application {
+        return new Application($injector, $configuration, $middleware);
     }
 
-    /**
-     * @var Injector
-     */
-    private $injector;
-
-    /**
-     * @var ConfigurationSet
-     */
-    private $configuration;
-
-    /**
-     * @var MiddlewareSet
-     */
-    private $middleware;
+    private Injector $injector;
+    private ConfigurationSet $configuration;
+    private MiddlewareSet $middleware;
 
     /**
      * @var callable|string
      */
-    private $routing;
+    private mixed $routing = "";
 
     /**
      * @param Injector $injector
@@ -92,10 +81,8 @@ class Application
      * Change routing
      *
      * @param callable|string $routing
-     *
-     * @return self
      */
-    public function setRouting($routing)
+    public function setRouting($routing): Application
     {
         $this->routing = $routing;
         return $this;

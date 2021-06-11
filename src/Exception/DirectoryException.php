@@ -7,18 +7,13 @@ use InvalidArgumentException;
 
 class DirectoryException extends InvalidArgumentException
 {
-    /**
-     * @param mixed $value
-     *
-     * @return static
-     */
-    public static function invalidEntry($value)
+    public static function invalidEntry(mixed $value): DirectoryException
     {
         if (is_object($value)) {
             $value = get_class($value);
         }
 
-        return new static(sprintf(
+        return new DirectoryException(sprintf(
             'Directory entry `%s` is not an `%s` instance',
             $value,
             Action::class

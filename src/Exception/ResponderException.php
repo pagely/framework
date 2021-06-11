@@ -7,14 +7,9 @@ use InvalidArgumentException;
 
 class ResponderException extends InvalidArgumentException
 {
-    /**
-     * @param string $spec
-     *
-     * @return static
-     */
-    public static function invalidClass($spec)
+    public static function invalidClass(string $spec): ResponderException
     {
-        return new static(sprintf(
+        return new ResponderException(sprintf(
             'Responder class `%s` must implement `%s`',
             $spec,
             ResponderInterface::class

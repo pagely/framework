@@ -34,7 +34,8 @@
     "require-dev": {
         "josegonzalez/dotenv": "^2.0",
         "phpunit/phpunit": "^9.0",
-        "vimeo/psalm": "^4.7"
+        "vimeo/psalm": "^4.7",
+        "phpstan/phpstan": "^0.12.89"
     },
     "suggest": {
         "josegonzalez/dotenv": "For environment based configuration loading"

@@ -12,9 +12,9 @@ use Whoops\Handler\XmlResponseHandler;
 class ExceptionHandlerPreferences extends Dictionary
 {
 
-    private bool $debug;
+    private bool $debug = false;
 
-    public function __construct(array $data = [], Env $env)
+    public function __construct(array $data = [], ?Env $env = null)
     {
         $data += [
             'text/html' => PrettyPageHandler::class,
@@ -29,7 +29,9 @@ class ExceptionHandlerPreferences extends Dictionary
             'text/plain' => PlainTextHandler::class,
         ]; // @codeCoverageIgnore
 
-        $this->debug = (bool) $env->getValue('DEBUG_STACKTRACE', false);
+        if ($env !== null) {
+            $this->debug = (bool) $env->getValue('DEBUG_STACKTRACE', false);
+        }
         parent::__construct($data);
     }
 
