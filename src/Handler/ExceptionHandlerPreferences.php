@@ -12,14 +12,8 @@ use Whoops\Handler\XmlResponseHandler;
 class ExceptionHandlerPreferences extends Dictionary
 {
 
-    /**
-     * @var UserRepository
-     */
-    private $debug;
+    private bool $debug;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct(array $data = [], Env $env)
     {
         $data += [
@@ -39,7 +33,7 @@ class ExceptionHandlerPreferences extends Dictionary
         parent::__construct($data);
     }
 
-    public function displayDebug( )
+    public function displayDebug(): bool
     {
         return $this->debug;
     }

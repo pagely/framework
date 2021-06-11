@@ -6,8 +6,8 @@ use Equip\Configuration\DiactorosConfiguration;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
 
 class DiactorosConfigurationTest extends ConfigurationTestCase
 {

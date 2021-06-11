@@ -4,10 +4,7 @@ namespace Equip\Resolver;
 
 trait ResolverTrait
 {
-    /**
-     * @var \Relay\ResolverInterface
-     */
-    private $resolver;
+    private Resolver $resolver;
 
     /**
      * Resolve a class spec into an object.

@@ -3,7 +3,7 @@
 namespace EquipTests;
 
 use Equip\Payload;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class PayloadTest extends TestCase
 {

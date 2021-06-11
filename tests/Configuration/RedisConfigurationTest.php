@@ -5,7 +5,7 @@ namespace EquipTests\Configuration;
 use Auryn\Injector;
 use Equip\Configuration\RedisConfiguration;
 use Equip\Env;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Redis;
 
 class RedisConfigurationTest extends TestCase
@@ -14,7 +14,7 @@ class RedisConfigurationTest extends TestCase
     {
         $injector = new Injector;
         $injector->delegate(Redis::class, function() {
-            $redisMock = $this->getMock(Redis::class, ['connect']);
+            $redisMock = $this->createMock(Redis::class, ['connect']);
 
             $redisMock
                 ->expects($this->once())
@@ -24,7 +24,7 @@ class RedisConfigurationTest extends TestCase
         });
 
         $config = new RedisConfiguration(
-            $this->getMock(Env::class)
+            $this->createMock(Env::class)
         );
         $config->apply($injector);
 

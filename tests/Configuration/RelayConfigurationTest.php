@@ -4,6 +4,8 @@ namespace EquipTests\Configuration;
 
 use Equip\Configuration\AurynConfiguration;
 use Equip\Configuration\RelayConfiguration;
+use Equip\Configuration\DefaultMiddlewareConfiguration;
+use Laminas\Diactoros\Response;
 use Relay\Relay;
 
 class RelayConfigurationTest extends ConfigurationTestCase
@@ -13,6 +15,7 @@ class RelayConfigurationTest extends ConfigurationTestCase
         return [
             new AurynConfiguration,
             new RelayConfiguration,
+            new DefaultMiddlewareConfiguration,
         ];
     }
 

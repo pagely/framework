@@ -4,7 +4,7 @@ namespace EquipTests;
 
 use Equip\Action;
 use Equip\Adr\DomainInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 abstract class DirectoryTestCase extends TestCase
 {
@@ -35,11 +35,8 @@ abstract class DirectoryTestCase extends TestCase
         return $action->getMock();
     }
 
-    /**
-     * @return DomainInterface
-     */
-    protected function getMockDomain()
+    protected function getMockDomain(): DomainInterface
     {
-        return $this->getMock(DomainInterface::class);
+        return $this->createMock(DomainInterface::class);
     }
 }

@@ -4,7 +4,7 @@ namespace EquipTests\Handler;
 
 use Equip\Env;
 use Equip\Handler\ExceptionHandlerPreferences;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -15,7 +15,7 @@ class ExceptionHandlerPreferencesTest extends TestCase
 {
     public function testConstruct()
     {
-        $env = $this->getMock(Env::class);
+        $env = $this->createMock(Env::class);
         $env->expects($this->atLeastOnce())
             ->method('getValue')
             ->with('DEBUG_STACKTRACE', false)

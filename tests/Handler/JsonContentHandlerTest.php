@@ -3,7 +3,9 @@ namespace EquipTests\Handler;
 
 use Equip\Exception\HttpBadRequestException;
 use Equip\Handler\JsonContentHandler;
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\Request;
+use Laminas\Diactoros\ServerRequest;
+use Middlewares\Utils\HttpErrorException;
 
 class JsonContentHandlerTest extends ContentHandlerTestCase
 {
@@ -13,31 +15,35 @@ class JsonContentHandlerTest extends ContentHandlerTestCase
             $mime = 'application/json',
             json_encode($body = ['test' => 'json'])
         );
-        $response = new Response;
-        $handler = new JsonContentHandler;
-        $resolved = $handler($request, $response, function ($req, $res) use ($mime, $body) {
-            $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
-            $this->assertEquals($body, $req->getParsedBody());
-            return $res;
-        });
+        $ran = false;
+        $this->t(
+            $request,
+            new JsonContentHandler(),
+            function ($req, $handler) use ($mime, $body, &$ran) {
+                $ran = true;
+                $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
+                $this->assertEquals($body, $req->getParsedBody());
+                return $handler->handle($req);
+            }
+        );
+        $this->assertTrue($ran);
     }
 
-    /**
-     * @expectedException \Equip\Exception\HttpException
-     * @expectedExceptionCode 400
-     * @expectedExceptionMessageRegExp /json.* syntax error/i
-     */
     public function testInvokeWithMalformedBody()
     {
+        $this->expectException(HttpErrorException::class);
+        $this->expectExceptionCode(400);
         $request = $this->getRequest(
             $mime = 'application/json',
             $body = '{not json}'
         );
-        $response = new Response;
-        $handler = new JsonContentHandler;
-        $resolved = $handler($request, $response, function ($req, $res) {
-            $this->fail('Handler callback unexpectedly invoked');
-        });
+        $this->t(
+            $request,
+            new JsonContentHandler(),
+            function ($req, $res) {
+                $this->fail('Handler callback unexpectedly invoked');
+            }
+        );
     }
 
     public function testInvokeWithNonApplicableMimeType()
@@ -46,12 +52,18 @@ class JsonContentHandlerTest extends ContentHandlerTestCase
             $mime = 'application/x-www-form-urlencoded',
             $body = http_build_query(['test' => 'form'], '', '&')
         );
-        $response = new Response;
-        $handler = new JsonContentHandler;
-        $resolved = $handler($request, $response, function ($req, $res) use ($mime) {
-            $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
-            $this->assertNull($req->getParsedBody());
-            return $res;
-        });
+
+        $ran = false;
+        $this->t(
+            $request,
+            new JsonContentHandler(),
+            function ($req, $handler) use ($mime, &$ran) {
+                $ran = true;
+                $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
+                $this->assertNull($req->getParsedBody());
+                return $handler->handle($req);
+            }
+        );
+        $this->assertTrue($ran);
     }
 }

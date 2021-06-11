@@ -8,9 +8,9 @@ use Equip\Configuration\ConfigurationInterface;
 use Equip\Configuration\ConfigurationSet;
 use Equip\Directory;
 use Equip\Middleware\MiddlewareSet;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Server\MiddlewareInterface;
 use ReflectionObject;
-use Relay\MiddlewareInterface;
 use Relay\Relay;
 
 class ApplicationTest extends TestCase
@@ -51,9 +51,9 @@ class ApplicationTest extends TestCase
 
     public function testCreate()
     {
-        $injector = $this->getMock(Injector::class);
-        $configuration = $this->getMock(ConfigurationSet::class);
-        $middleware = $this->getMock(MiddlewareSet::class);
+        $injector = $this->createMock(Injector::class);
+        $configuration = $this->createMock(ConfigurationSet::class);
+        $middleware = $this->createMock(MiddlewareSet::class);
 
         $app = new Application($injector, $configuration, $middleware);
 
@@ -63,10 +63,10 @@ class ApplicationTest extends TestCase
     public function testSetConfiguration()
     {
         $data = [
-            $this->getMock(ConfigurationInterface::class),
+            $this->createMock(ConfigurationInterface::class),
         ];
 
-        $configuration = $this->getMock(ConfigurationSet::class);
+        $configuration = $this->createMock(ConfigurationSet::class);
         $configuration
             ->expects($this->once())
             ->method('withValues')
@@ -82,10 +82,10 @@ class ApplicationTest extends TestCase
     public function testSetMiddleware()
     {
         $data = [
-            $this->getMock(MiddlewareInterface::class),
+            $this->createMock(MiddlewareInterface::class),
         ];
 
-        $middleware = $this->getMock(MiddlewareSet::class);
+        $middleware = $this->createMock(MiddlewareSet::class);
         $middleware
             ->expects($this->once())
             ->method('withValues')
@@ -114,10 +114,10 @@ class ApplicationTest extends TestCase
 
     public function testRun()
     {
-        $injector = $this->getMock(Injector::class);
-        $middleware = $this->getMock(MiddlewareSet::class);
-        $config1 = $this->getMock(ConfigurationInterface::class);
-        $config2 = $this->getMock(ConfigurationInterface::class);
+        $injector = $this->createMock(Injector::class);
+        $middleware = $this->createMock(MiddlewareSet::class);
+        $config1 = $this->createMock(ConfigurationInterface::class);
+        $config2 = $this->createMock(ConfigurationInterface::class);
         $routing = function () {
         };
 

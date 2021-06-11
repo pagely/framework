@@ -3,8 +3,7 @@
 namespace Equip\Configuration;
 
 use Auryn\Injector;
-use Equip\Resolver\AurynResolver;
-use Relay\ResolverInterface;
+use Equip\Resolver\Resolver;
 
 class AurynConfiguration implements ConfigurationInterface
 {
@@ -13,12 +12,7 @@ class AurynConfiguration implements ConfigurationInterface
      */
     public function apply(Injector $injector)
     {
-        $injector->alias(
-            ResolverInterface::class,
-            AurynResolver::class
-        );
-
-        $injector->define(AurynResolver::class, [
+        $injector->define(Resolver::class, [
             ':injector' => $injector,
         ]);
     }

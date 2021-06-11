@@ -2,6 +2,9 @@
 
 namespace Equip;
 
+use Equip\Adr\DomainInterface;
+use Equip\Adr\InputInterface;
+use Equip\Adr\ResponderInterface;
 use Equip\Input;
 use Equip\Responder\ChainedResponder;
 
@@ -9,32 +12,23 @@ class Action
 {
     /**
      * The domain specification.
-     *
-     * @var DomainInterface
      */
-    protected $domain;
+    protected string $domain;
 
     /**
      * The responder specification.
-     *
-     * @var ResponderInterface
      */
-    protected $responder = ChainedResponder::class;
+    protected string $responder = ChainedResponder::class;
 
     /**
      * The input specification.
-     *
-     * @var InputInterface
      */
-    protected $input = Input::class;
+    protected string $input = Input::class;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct(
-        $domain,
-        $responder = null,
-        $input = null
+        string $domain,
+        ?string $responder = null,
+        ?string $input = null
     ) {
         $this->domain = $domain;
 
@@ -49,30 +43,24 @@ class Action
 
     /**
      * Returns the domain specification.
-     *
-     * @return DomainInterface
      */
-    public function getDomain()
+    public function getDomain(): string
     {
         return $this->domain;
     }
 
     /**
      * Returns the responder specification.
-     *
-     * @return ResponderInterface
      */
-    public function getResponder()
+    public function getResponder(): string
     {
         return $this->responder;
     }
 
     /**
      * Returns the input specification.
-     *
-     * @return InputInterface
      */
-    public function getInput()
+    public function getInput(): string
     {
         return $this->input;
     }

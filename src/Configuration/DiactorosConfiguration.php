@@ -6,9 +6,9 @@ use Auryn\Injector;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequestFactory;
 
 class DiactorosConfiguration implements ConfigurationInterface
 {
@@ -23,7 +23,7 @@ class DiactorosConfiguration implements ConfigurationInterface
             // requests, except that Relay uses the wrong type hint:
             // https://github.com/relayphp/Relay.Relay/issues/25
             //
-            // 'Zend\Diactoros\Request'
+            // 'Laminas\Diactoros\Request'
             ServerRequest::class
         );
 

@@ -4,7 +4,7 @@ namespace EquipTests\Formatter;
 
 use Equip\Formatter\JsonFormatter;
 use Equip\Payload;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class JsonFormatterTest extends TestCase
 {
@@ -13,7 +13,7 @@ class JsonFormatterTest extends TestCase
      */
     private $formatter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formatter = new JsonFormatter();
     }

@@ -5,53 +5,28 @@ namespace Equip\Handler;
 use Equip\Exception\HttpException;
 use Exception;
 use InvalidArgumentException;
+use Monolog\Handler\HandlerInterface;
 use Negotiation\Negotiator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use Relay\ResolverInterface;
+use Equip\Resolver\Resolver;
 use Whoops\Run as Whoops;
 
 class ExceptionHandler
 {
-    /**
-     * @var Negotiator
-     */
-    private $negotiator;
+    private Negotiator $negotiator;
+    private ExceptionHandlerPreferences $preferences;
+    private Resolver $resolver;
+    private Whoops $whoops;
+    private ?LoggerInterface $logger;
 
-    /**
-     * @var ExceptionHandlerPreferences
-     */
-    private $preferences;
-
-    /**
-     * @var ResolverInterface
-     */
-    private $resolver;
-
-    /**
-     * @var Whoops
-     */
-    private $whoops;
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private $logger;
-
-    /**
-     * @param ExceptionHandlerPreferences $preferences
-     * @param Negotiator $negotiator
-     * @param ResolverInterface $resolver
-     * @param Whoops $whoops
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(
         ExceptionHandlerPreferences $preferences,
         Negotiator $negotiator,
-        ResolverInterface $resolver,
+        Resolver $resolver,
         Whoops $whoops,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null
     ) {
         $this->preferences = $preferences;
         $this->logger = $logger;
@@ -60,18 +35,11 @@ class ExceptionHandler
         $this->whoops = $whoops;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(
         ServerRequestInterface $request,
         ResponseInterface $response,
         callable $next
-    ) {
+    ): ResponseInterface {
         try {
             return $next($request, $response);
         } catch (Exception $e) {
@@ -121,11 +89,8 @@ class ExceptionHandler
     /**
      * Determine the preferred content type for the current request
      *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
      */
-    private function type(ServerRequestInterface $request)
+    private function type(ServerRequestInterface $request): string
     {
         $accept = $request->getHeaderLine('Accept');
         $priorities = $this->preferences->toArray();
@@ -144,11 +109,8 @@ class ExceptionHandler
     /**
      * Retrieve the handler to use for the given type
      *
-     * @param string $type
-     *
-     * @return \Whoops\Handler\HandlerInterface
      */
-    private function handler($type)
+    private function handler(string $type): mixed
     {
         return call_user_func($this->resolver, $this->preferences[$type]);
     }

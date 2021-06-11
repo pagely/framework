@@ -8,24 +8,16 @@ interface FormatterInterface
 {
     /**
      * Get the content types this formatter can satisfy.
-     *
-     * @return array
      */
-    public static function accepts();
+    public static function accepts(): array;
 
     /**
      * Get the content type of the response body.
-     *
-     * @return string
      */
-    public function type();
+    public function type(): string;
 
     /**
      * Get the response body from the payload.
-     *
-     * @param PayloadInterface $payload
-     *
-     * @return string
      */
-    public function body(PayloadInterface $payload);
+    public function body(PayloadInterface $payload): string;
 }

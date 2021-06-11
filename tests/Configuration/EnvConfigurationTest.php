@@ -4,6 +4,7 @@ namespace EquipTests\Configuration;
 
 use Equip\Configuration\EnvConfiguration;
 use Equip\Env;
+use Equip\Exception\EnvException;
 use josegonzalez\Dotenv\Loader;
 
 class EnvConfigurationTest extends ConfigurationTestCase
@@ -13,7 +14,7 @@ class EnvConfigurationTest extends ConfigurationTestCase
      */
     private $envfile;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists(Loader::class)) {
             $this->markTestSkipped('Dotenv is not installed');
@@ -42,36 +43,26 @@ class EnvConfigurationTest extends ConfigurationTestCase
         $this->destroyEnv();
     }
 
-    /**
-     * @expectedException \Equip\Exception\EnvException
-     * @expectedExceptionMessageRegExp /unable to automatically detect/i
-     */
     public function testUnableToDetect()
     {
+        $this->expectException(EnvException::class);
+        $this->expectExceptionMessageMatches('/unable to automatically detect/i');
         $config = new EnvConfiguration;
     }
 
-    /**
-     * @expectedException \Equip\Exception\EnvException
-     * @expectedExceptionMessageRegExp /environment file .* does not exist/i
-     */
     public function testInvalidRoot()
     {
+        $this->expectException(EnvException::class);
+        $this->expectExceptionMessageMatches('/environment file .* does not exist/i');
         $config = new EnvConfiguration('/tmp/bad/path/.env');
     }
 
-    /**
-     * @return void
-     */
-    private function createEnv()
+    private function createEnv(): void
     {
         file_put_contents($this->envfile, 'test=true');
     }
 
-    /**
-     * @return void
-     */
-    private function destroyEnv()
+    private function destroyEnv(): void
     {
         unlink($this->envfile);
     }

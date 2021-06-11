@@ -6,8 +6,8 @@ use Equip\Configuration\AurynConfiguration;
 use Equip\Handler\ActionHandler;
 use EquipTests\Configuration\ConfigurationTestCase;
 use EquipTests\Fake\FakeDomain;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
 
 class ActionHandlerTest extends ConfigurationTestCase
 {

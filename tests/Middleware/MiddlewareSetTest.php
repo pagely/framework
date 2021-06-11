@@ -4,17 +4,17 @@ namespace EquipTests\Middleware;
 
 use Equip\Exception\MiddlewareException;
 use Equip\Middleware\MiddlewareSet;
-use PHPUnit_Framework_TestCase as TestCase;
-use Relay\MiddlewareInterface;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Server\MiddlewareInterface;
 use stdClass;
 
 class MiddlewareSetTest extends TestCase
 {
     public function testWithInvalidEntries()
     {
-        $this->setExpectedExceptionRegExp(
-            MiddlewareException::class,
-            '/Middleware .* is not invokable/i'
+        $this->expectException(MiddlewareException::class);
+        $this->expectExceptionMessageMatches(
+            '/Middleware .* is not a psr-15 middleware/i'
         );
 
         new MiddlewareSet([new stdClass]);
@@ -23,9 +23,10 @@ class MiddlewareSetTest extends TestCase
     public function testWithValidEntries()
     {
         $middleware = [
-            $this->getMock(MiddlewareInterface::class),
-            function () {
-            }
+            $this->createMock(MiddlewareInterface::class),
+            $this->getMiddlewareClass(),
+            function() {
+            },
         ];
         $collection = new MiddlewareSet($middleware);
         $this->assertSame($middleware, $collection->toArray());
@@ -55,6 +56,9 @@ class MiddlewareSetTest extends TestCase
      */
     private function getMiddlewareClass()
     {
-        return get_class($this->prophesize(MiddlewareInterface::class)->reveal());
+        $mock = $this->getMockBuilder(MiddlewareInterface::class)
+                     ->setMockClassName("MiddlewareInterface_".uniqid())
+                     ->getMock();
+        return get_class($mock);
     }
 }

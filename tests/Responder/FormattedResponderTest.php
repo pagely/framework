@@ -12,8 +12,8 @@ use Equip\Responder\FormattedResponder;
 use Negotiation\Negotiator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
 
 class FormattedResponderTest extends ConfigurationTestCase
 {
@@ -29,7 +29,7 @@ class FormattedResponderTest extends ConfigurationTestCase
         ];
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -82,8 +82,8 @@ class FormattedResponderTest extends ConfigurationTestCase
 
     public function testInvalidResponder()
     {
-        $this->setExpectedExceptionRegExp(
-            FormatterException::class,
+        $this->expectException(FormatterException::class);
+        $this->expectExceptionMessageMatches(
             '/Formatter class .* must implement .*FormatterInterface/i'
         );
 
@@ -92,8 +92,8 @@ class FormattedResponderTest extends ConfigurationTestCase
 
     public function testInvalidResponderQuality()
     {
-        $this->setExpectedExceptionRegExp(
-            FormatterException::class,
+        $this->expectException(FormatterException::class);
+        $this->expectExceptionMessageMatches(
             '/No quality have been set for the .*/ii'
         );
 
@@ -121,8 +121,8 @@ class FormattedResponderTest extends ConfigurationTestCase
     public function testEmptyPayload()
     {
         $payload = new Payload;
-        $request = $this->getMock(ServerRequestInterface::class);
-        $response = $this->getMock(ResponseInterface::class);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
         $returned = call_user_func($this->responder, $request, $response, $payload);
         $this->assertSame($returned, $response);
     }

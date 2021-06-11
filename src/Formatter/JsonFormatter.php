@@ -6,34 +6,22 @@ use Equip\Adr\PayloadInterface;
 
 class JsonFormatter implements FormatterInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public static function accepts()
+    public static function accepts(): array
     {
         return ['application/json'];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function type()
+    public function type(): string
     {
         return 'application/json';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function body(PayloadInterface $payload)
+    public function body(PayloadInterface $payload): string
     {
         return json_encode($payload->getOutput(), $this->options());
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function options()
+    protected function options(): int
     {
         return 0;
     }

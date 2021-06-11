@@ -5,10 +5,10 @@ namespace EquipTests\Responder;
 use Equip\Payload;
 use Equip\Responder\StatusResponder;
 use Lukasoppermann\Httpstatus\Httpstatus;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\Response;
 
 class StatusResponderTest extends TestCase
 {
@@ -17,7 +17,7 @@ class StatusResponderTest extends TestCase
      */
     private $responder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->responder = new StatusResponder(
             new Httpstatus

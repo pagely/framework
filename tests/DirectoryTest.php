@@ -4,6 +4,7 @@ namespace EquipTests;
 
 use Equip\Adr\DomainInterface;
 use Equip\Directory;
+use Equip\Exception\DirectoryException;
 use Equip\Input;
 use Equip\Structure\Dictionary;
 
@@ -14,7 +15,7 @@ class DirectoryTest extends DirectoryTestCase
      */
     private $directory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->directory = new Directory;
     }
@@ -24,12 +25,10 @@ class DirectoryTest extends DirectoryTestCase
         $this->assertInstanceOf(Dictionary::class, $this->directory);
     }
 
-    /**
-     * @expectedException \Equip\Exception\DirectoryException
-     * @expectedExceptionRegExp /entry .* is not an action/i
-     */
     public function testInvalidAction()
     {
+        $this->expectException(DirectoryException::class);
+        $this->expectExceptionMessageMatches('/entry .* is not an /i');
         $directory = $this->directory->withValue('GET /', $this);
     }
 

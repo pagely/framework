@@ -5,10 +5,10 @@ namespace EquipTests\Responder;
 use Equip\Adr\Status;
 use Equip\Payload;
 use Equip\Responder\RedirectResponder;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\Response;
 
 class RedirectResponderTest extends TestCase
 {
@@ -17,7 +17,7 @@ class RedirectResponderTest extends TestCase
      */
     private $responder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->responder = new RedirectResponder;
     }

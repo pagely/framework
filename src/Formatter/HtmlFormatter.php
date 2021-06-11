@@ -6,18 +6,12 @@ use Equip\Adr\PayloadInterface;
 
 abstract class HtmlFormatter implements FormatterInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public static function accepts()
+    public static function accepts(): array
     {
         return ['text/html'];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function type()
+    public function type(): string
     {
         return 'text/html';
     }

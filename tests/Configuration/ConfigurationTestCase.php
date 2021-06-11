@@ -3,7 +3,7 @@
 namespace EquipTests\Configuration;
 
 use Auryn\Injector;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 abstract class ConfigurationTestCase extends TestCase
 {
@@ -17,7 +17,7 @@ abstract class ConfigurationTestCase extends TestCase
      */
     abstract protected function getConfigurations();
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->applyConfigurations();
     }

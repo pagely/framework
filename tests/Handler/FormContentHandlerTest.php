@@ -2,7 +2,7 @@
 namespace EquipTests\Handler;
 
 use Equip\Handler\FormContentHandler;
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\Response;
 
 class FormContentHandlerTest extends ContentHandlerTestCase
 {
@@ -12,13 +12,19 @@ class FormContentHandlerTest extends ContentHandlerTestCase
             $mime = 'application/x-www-form-urlencoded',
             http_build_query($body = ['test' => 'form'], '', '&')
         );
-        $response = new Response;
-        $handler = new FormContentHandler;
-        $resolved = $handler($request, $response, function ($req, $res) use ($mime, $body) {
-            $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
-            $this->assertSame($body, $req->getParsedBody());
-            return $res;
-        });
+
+        $ran = false;
+        $this->t(
+            $request,
+            new FormContentHandler(),
+            function ($req, $handler) use ($mime, $body, &$ran) {
+                $ran = true;
+                $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
+                $this->assertSame($body, $req->getParsedBody());
+                return $handler->handle($req);
+            }
+        );
+        $this->assertTrue($ran);
     }
 
     public function testInvokeWithNonApplicableMimeType()
@@ -27,12 +33,18 @@ class FormContentHandlerTest extends ContentHandlerTestCase
             $mime = 'application/json',
             $body = json_encode((object) ['test' => 'json'])
         );
-        $response = new Response;
-        $handler = new FormContentHandler;
-        $resolved = $handler($request, $response, function ($req, $res) use ($mime) {
-            $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
-            $this->assertNull($req->getParsedBody());
-            return $res;
-        });
+
+        $ran = false;
+        $this->t(
+            $request,
+            new FormContentHandler(),
+            function ($req, $handler) use ($mime, &$ran) {
+                $ran = true;
+                $this->assertSame($mime, $req->getHeaderLine('Content-Type'));
+                $this->assertNull($req->getParsedBody());
+                return $handler->handle($req);
+            }
+        );
+        $this->assertTrue($ran);
     }
 }

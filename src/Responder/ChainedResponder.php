@@ -6,21 +6,17 @@ use Equip\Adr\PayloadInterface;
 use Equip\Adr\ResponderInterface;
 use Equip\Exception\ResponderException;
 use Equip\Resolver\ResolverTrait;
+use Equip\Resolver\Resolver;
 use Equip\Structure\Set;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Relay\ResolverInterface;
 
 class ChainedResponder extends Set implements ResponderInterface
 {
     use ResolverTrait;
 
-    /**
-     * @param ResolverInterface $resolver
-     * @param array $responders
-     */
     public function __construct(
-        ResolverInterface $resolver,
+        Resolver $resolver,
         array $responders = [
             FormattedResponder::class,
             RedirectResponder::class,

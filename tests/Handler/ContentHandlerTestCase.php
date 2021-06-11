@@ -1,9 +1,13 @@
 <?php
 namespace EquipTests\Handler;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Stream;
+use PHPUnit\Framework\TestCase;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\Response;
+use Psr\Http\Server\MiddlewareInterface;
+use Relay\Relay;
+use Closure;
 
 abstract class ContentHandlerTestCase extends TestCase
 {
@@ -26,5 +30,18 @@ abstract class ContentHandlerTestCase extends TestCase
                 'Content-Type' => $mime,
             ]
         );
+    }
+
+    protected function t(ServerRequest $request, MiddlewareInterface $middleware, Closure $asserter): void
+    {
+        $relay = new Relay([
+            $middleware,
+            $asserter,
+            function() {
+                return new Response();
+            },
+        ]);
+
+        $relay->handle($request);
     }
 }

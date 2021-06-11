@@ -6,19 +6,14 @@ use DomainException;
 
 class MiddlewareException extends DomainException
 {
-    /**
-     * @param string|object $spec
-     *
-     * @return static
-     */
-    public static function notInvokable($spec)
+    public static function notValidMiddleware(mixed $spec): MiddlewareException
     {
         if (is_object($spec)) {
             $spec = get_class($spec);
         }
 
-        return new static(sprintf(
-            'Middleware `%s` is not invokable',
+        return new MiddlewareException(sprintf(
+            'Middleware `%s` is not a psr-15 middleware or compatable callable',
             $spec
         ));
     }

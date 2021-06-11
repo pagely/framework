@@ -8,28 +8,21 @@ use Equip\Exception\FormatterException;
 use Equip\Formatter\FormatterInterface;
 use Equip\Formatter\JsonFormatter;
 use Equip\Resolver\ResolverTrait;
+use Equip\Resolver\Resolver;
 use Equip\Structure\SortedDictionary;
 use Negotiation\Negotiator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Relay\ResolverInterface;
 
 class FormattedResponder extends SortedDictionary implements ResponderInterface
 {
     use ResolverTrait;
 
-    /**
-     * @var Negotiator
-     */
-    private $negotiator;
+    private Negotiator $negotiator;
 
-    /**
-     * @param Negotiator $negotiator
-     * @param ResolverInterface $resolver
-     */
     public function __construct(
         Negotiator $negotiator,
-        ResolverInterface $resolver,
+        Resolver $resolver,
         array $formatters = [
             JsonFormatter::class => 1.0,
         ]

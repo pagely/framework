@@ -10,16 +10,16 @@ use Equip\Env;
 use Equip\Exception\HttpException;
 use Equip\Handler\ExceptionHandler;
 use EquipTests\Configuration\ConfigurationTestCase;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
 
 class ExceptionHandlerTest extends ConfigurationTestCase
 {
     protected function getConfigurations()
     {
-        $env = $this->getMock(Env::class);
+        $env = $this->createMock(Env::class);
         $env->expects($this->atLeastOnce())
             ->method('getValue')
             ->with('DEBUG_STACKTRACE', false)

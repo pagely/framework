@@ -8,9 +8,9 @@ use Equip\Adr\InputInterface;
 use Equip\Adr\PayloadInterface;
 use Equip\Adr\ResponderInterface;
 use Equip\Resolver\ResolverTrait;
+use Equip\Resolver\Resolver;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Relay\ResolverInterface;
 
 class ActionHandler
 {
@@ -18,10 +18,7 @@ class ActionHandler
 
     const ACTION_ATTRIBUTE = 'equip/adr:action';
 
-    /**
-     * @param ResolverInterface $resolver
-     */
-    public function __construct(ResolverInterface $resolver)
+    public function __construct(Resolver $resolver)
     {
         $this->resolver = $resolver;
     }

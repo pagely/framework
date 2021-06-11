@@ -2,7 +2,7 @@
 
 namespace Equip\Handler;
 
-use Relay\Middleware\FormContentHandler as AbstractHandler;
+use Middlewares\UrlEncodePayload as AbstractHandler;
 
 class FormContentHandler extends AbstractHandler
 {

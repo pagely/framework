@@ -27,7 +27,7 @@ class ChainedResponderTest extends ConfigurationTestCase
         ];
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -44,8 +44,8 @@ class ChainedResponderTest extends ConfigurationTestCase
 
     public function testInvalidResponder()
     {
-        $this->setExpectedExceptionRegExp(
-            ResponderException::class,
+        $this->expectException(ResponderException::class);
+        $this->expectExceptionMessageMatches(
             '/Responder class .* must implement .*ResponderInterface/i'
         );
 

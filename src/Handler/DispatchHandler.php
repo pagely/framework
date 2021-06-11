@@ -52,10 +52,7 @@ class DispatchHandler
         return $next($request, $response);
     }
 
-    /**
-     * @return Dispatcher
-     */
-    protected function dispatcher()
+    protected function dispatcher(): Dispatcher
     {
         return FastRoute\simpleDispatcher(function (RouteCollector $collector) {
             foreach ($this->directory as $request => $action) {
@@ -70,17 +67,7 @@ class DispatchHandler
         });
     }
 
-    /**
-     * @throws HttpNotFound
-     * @throws HttpMethodNotAllowed
-     *
-     * @param Dispatcher $dispatcher
-     * @param string $method
-     * @param string $path
-     *
-     * @return array [Action, $arguments]
-     */
-    private function dispatch(Dispatcher $dispatcher, $method, $path)
+    private function dispatch(Dispatcher $dispatcher, string $method, string $path): array
     {
         $route = $dispatcher->dispatch($method, $path);
         $status = array_shift($route);

@@ -5,7 +5,7 @@ namespace EquipTests\Configuration;
 use Auryn\Injector;
 use Equip\Configuration\MonologConfiguration;
 use Monolog\Logger;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 class MonologConfigurationTest extends TestCase

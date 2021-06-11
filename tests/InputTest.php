@@ -3,9 +3,9 @@
 namespace EquipTests;
 
 use Equip\Input;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 
 class InputTest extends TestCase
 {
@@ -68,7 +68,7 @@ class InputTest extends TestCase
     public function testUploadedFiles()
     {
         $files = [
-            'file' => $this->getMock(UploadedFileInterface::class),
+            'file' => $this->createMock(UploadedFileInterface::class),
         ];
 
         $request = new ServerRequest;
@@ -123,7 +123,7 @@ class InputTest extends TestCase
         $this->assertSame($value, $this->execute($request));
 
         $value = [
-            'merge' => $this->getMock(UploadedFileInterface::class),
+            'merge' => $this->createMock(UploadedFileInterface::class),
         ];
         $request = $request->withParsedBody($value);
         $this->assertSame($value, $this->execute($request));

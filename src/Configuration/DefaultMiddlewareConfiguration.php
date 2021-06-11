@@ -17,7 +17,7 @@ class DefaultMiddlewareConfiguration implements ConfigurationInterface
     {
         $set = new MiddlewareSet([
             function() {
-                return Response();
+                return new Response();
             }
         ]);
         $injector->share($set);
