@@ -13,30 +13,18 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class DispatchHandler
 {
-    /**
-     * @var Directory
-     */
-    private $directory;
+    private Directory $directory;
 
-    /**
-     * @param Directory $directory
-     */
     public function __construct(Directory $directory)
     {
         $this->directory = $directory;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function __invoke(
         ServerRequestInterface $request,
         ResponseInterface $response,
         callable $next
     ) {
-        /**
-         * @var $action Equip\Action
-         */
         list($action, $args) = $this->dispatch(
             $this->dispatcher(),
             $request->getMethod(),

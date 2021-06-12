@@ -84,11 +84,8 @@ class FormattedResponder extends SortedDictionary implements ResponderInterface
      * Uses content negotiation to find the best available output format for
      * the requested content type.
      *
-     * @param ServerRequestInterface $request
-     *
-     * @return FormatterInterface
      */
-    protected function formatter(ServerRequestInterface $request)
+    protected function formatter(ServerRequestInterface $request): FormatterInterface
     {
         $accept = $request->getHeaderLine('Accept');
         $priorities = $this->priorities();

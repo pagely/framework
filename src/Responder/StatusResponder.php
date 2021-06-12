@@ -52,18 +52,13 @@ class StatusResponder implements ResponderInterface
 
     /**
      * Get the response with the status code from the payload.
-     *
-     * @param ResponseInterface $response
-     * @param PayloadInterface $payload
-     *
-     * @return ResponseInterface
      */
     private function status(
         ResponseInterface $response,
         PayloadInterface $payload
-    ) {
+    ): ResponseInterface {
         $status = $payload->getStatus();
-        $code = $this->http_status->getStatusCode($status);
+        $code = (int)$this->http_status->getStatusCode($status);
 
         return $response->withStatus($code);
     }
