@@ -7,9 +7,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 _..._
 
-## 3.0.0 - ?
+## 3.0.0-alpha1 - 2021-06-17
 
 - Replace routing with dispatching, see MIGRATING for details
+- Drop plates supports
+- Update everything for PHP compat
+- Update to PHPunit 9.0
 
 ## 2.1.0 - ?
 
