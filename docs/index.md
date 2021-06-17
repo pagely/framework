@@ -121,7 +121,6 @@ The following configurations are available but not used by default:
 
 * [`EnvConfiguration`](https://github.com/equip/framework/blob/master/src/Configuration/EnvConfiguration.php) - Use [Dotenv](https://github.com/josegonzalez/php-dotenv) to populate the content of [`Env`](https://github.com/equip/framework/blob/master/src/Env.php)
 * [`MonologConfiguration`](https://github.com/equip/framework/blob/master/src/Configuration/MonologConfiguration.php) - Use [Monolog](https://github.com/Seldaek/monolog/) for the framework [PSR-3](http://www.php-fig.org/psr/psr-3/) implementation
-* [`PlatesConfiguration`](https://github.com/equip/framework/blob/master/src/Configuration/PlatesConfiguration.php) - Configure the [Plates](http://platesphp.com/) template engine
 * [`RedisConfiguration`](https://github.com/equip/framework/blob/master/src/Configuration/RedisConfiguration.php) - Use [Redis](http://redis.io) for in-memory store
 
 #### Setting The Env File
@@ -543,7 +542,6 @@ This loose structure around actions, input, and responders allows each project t
 Equip includes formatters that can be used in responders to simplify the formatting of domain output for the response:
 
 * [`JsonFormatter`](https://github.com/equip/framework/blob/master/src/Formatter/JsonFormatter.php) - Encodes the content as [JSON](http://www.json.org/).
-* [`PlatesFormatter`](https://github.com/equip/framework/blob/master/src/Formatter/PlatesFormatter.php) - Encodes the content using a [Plates](http://platesphp.com/) template set by the responder.
 
 All formatters must implement [`FormatterInterface`](https://github.com/equip/framework/blob/master/src/Formatter/FormatterInterface.php).
 
