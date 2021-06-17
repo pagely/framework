@@ -10,8 +10,10 @@ use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class DispatchHandler
+class DispatchHandler implements MiddlewareInterface
 {
     private Directory $directory;
 
@@ -20,11 +22,8 @@ class DispatchHandler
         $this->directory = $directory;
     }
 
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        callable $next
-    ) {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
         list($action, $args) = $this->dispatch(
             $this->dispatcher(),
             $request->getMethod(),
@@ -37,7 +36,8 @@ class DispatchHandler
             $request = $request->withAttribute($key, $value);
         }
 
-        return $next($request, $response);
+        $r = $handler->handle($request);
+        return $r;
     }
 
     protected function dispatcher(): Dispatcher

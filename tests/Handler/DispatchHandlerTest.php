@@ -11,8 +11,11 @@ use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use \Closure;
 
-class DispatchHandlerTest extends TestCase
+class DispatchHandlerTest extends HandlerTestCase
 {
     /**
      * @var Directory
@@ -29,15 +32,11 @@ class DispatchHandlerTest extends TestCase
         $action = $this->createMock(ActionInterface::class);
         $directory = $this->directory->get('/[{name}]', $action);
         $request = $this->getRequest('GET', '/tester');
-        $response = new Response;
-
-        $next = function (ServerRequest $request, Response $response) use ($action) {
+        $response = $this->dispatch($directory, $request, function($request, $handler) use ($action) {
             $this->assertSame($action, $request->getAttribute(ActionHandler::ACTION_ATTRIBUTE));
             $this->assertSame('tester', $request->getAttribute('name'));
-            return $response;
-        };
-
-        $this->dispatch($directory, $request, $response, $next);
+            return $handler->handle($request);
+        });
     }
 
     public function testPrefixed()
@@ -46,33 +45,24 @@ class DispatchHandlerTest extends TestCase
         $directory = $this->directory->withPrefix('prefix');
         $directory = $directory->get('/[{name}]', $action);
         $request = $this->getRequest('GET', '/prefix/tester');
-        $response = new Response;
 
-        $next = function (ServerRequest $request, Response $response) use ($action) {
+        $response = $this->dispatch($directory, $request, function($request, $handler) use ($action) {
             $this->assertSame($action, $request->getAttribute(ActionHandler::ACTION_ATTRIBUTE));
             $this->assertSame('tester', $request->getAttribute('name'));
-            return $response;
-        };
-
-        $this->dispatch($directory, $request, $response, $next);
+            return $handler->handle($request);
+        });
     }
 
     public function testNotFoundException()
     {
         $this->expectException(HttpException::class);
         $this->expectExceptionMessageMatches('/cannot find any resource at/i');
-        $handler = new DispatchHandler($this->directory);
-        $request = $this->getRequest('GET', '/');
-        $response = new Response;
 
-        return $this->dispatch(
-            $this->directory,
-            $request,
-            $response,
-            function ($request, $response) {
-                return $response;
-            }
-        );
+        $request = $this->getRequest('GET', '/');
+
+        $response = $this->dispatch($this->directory, $request, function($request, $handler) {
+            return $request->handle($request);
+        });
     }
 
     public function testMethodNotAllowedException()
@@ -83,43 +73,18 @@ class DispatchHandlerTest extends TestCase
         $action = $this->createMock(ActionInterface::class);
         $handler = new DispatchHandler($this->directory);
         $request = $this->getRequest('POST');
-        $response = new Response;
 
         $directory = $this->directory->get('/', $action);
 
-        return $this->dispatch(
-            $directory,
-            $request,
-            $response,
-            function ($request, $response) {
-                return $response;
-            }
-        );
+        $response = $this->dispatch($directory, $request, function($request, $handler) {
+            return $request->handle($request);
+        });
     }
 
-    /**
-     * @return Response
-     */
-    private function dispatch(
-        Directory $directory,
-        ServerRequest $request,
-        Response $response,
-        callable $next
-    ) {
-        $dispatcher = new DispatchHandler($directory);
-        return $dispatcher($request, $response, $next);
-    }
-
-    /**
-     * @param string $method
-     * @param string $path
-     *
-     * @return ServerRequest
-     */
-    private function getRequest($method = 'GET', $path = '/')
+    protected function dispatch(Directory $directory, ServerRequestInterface $request, Closure $asserter): ResponseInterface
     {
-        return (new ServerRequest)
-            ->withMethod($method)
-            ->withUri(new Uri($path));
+        $dispatcher = new DispatchHandler($directory);
+        return $this->t($request, $dispatcher, $asserter);
     }
+
 }
