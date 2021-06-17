@@ -3,7 +3,6 @@
 namespace EquipTests\Formatter;
 
 use Equip\Formatter\HtmlFormatter;
-use Equip\Payload;
 use PHPUnit\Framework\TestCase;
 
 class HtmlFormatterTest extends TestCase

@@ -2,13 +2,14 @@
 
 namespace EquipTests;
 
-use Equip\Adr\DomainInterface;
+use Equip\Contract\ActionInterface;
 use Equip\Directory;
 use Equip\Exception\DirectoryException;
 use Equip\Input;
 use Equip\Structure\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class DirectoryTest extends DirectoryTestCase
+class DirectoryTest extends TestCase
 {
     /**
      * @var Directory
@@ -30,24 +31,17 @@ class DirectoryTest extends DirectoryTestCase
         $this->expectException(DirectoryException::class);
         $this->expectExceptionMessageMatches('/entry .* is not an /i');
         $directory = $this->directory->withValue('GET /', $this);
+
+        $this->directory->withValue('GET /', $this);
     }
 
     public function testAction()
     {
-        $action = $this->getMockAction();
+        $action = $this->createMock(ActionInterface::class);
         $directory = $this->directory->action('LIST', '/', $action);
 
         $this->assertTrue($directory->hasValue('LIST /'));
         $this->assertSame($action, $directory->getValue("LIST /"));
-    }
-
-    public function testActionWithDomain()
-    {
-        $domain = get_class($this->getMockDomain());
-        $directory = $this->directory->action('LIST', '/', $domain);
-        $action = $directory->getValue('LIST /');
-
-        $this->assertSame($domain, $action->getDomain());
     }
 
     /**
@@ -55,7 +49,7 @@ class DirectoryTest extends DirectoryTestCase
      */
     public function testActionMethods($method)
     {
-        $action = $this->getMockAction();
+        $action = $this->createMock(ActionInterface::class);
         $callback = [$this->directory, strtolower($method)];
         $directory = call_user_func($callback, '/', $action);
         $match = constant(get_class($directory).'::'.$method);

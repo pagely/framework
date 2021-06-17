@@ -7,6 +7,7 @@ use Equip\Application;
 use Equip\Configuration\ConfigurationInterface;
 use Equip\Configuration\ConfigurationSet;
 use Equip\Directory;
+use Equip\Dispatching\DispatchingSet;
 use Equip\Middleware\MiddlewareSet;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Server\MiddlewareInterface;
@@ -23,7 +24,7 @@ class ApplicationTest extends TestCase
             'injector' => Injector::class,
             'configuration' => ConfigurationSet::class,
             'middleware' => MiddlewareSet::class,
-            'routing' => null,
+            'dispatching' => DispatchingSet::class,
         ];
 
         foreach ($props as $name => $expected) {
@@ -36,10 +37,6 @@ class ApplicationTest extends TestCase
             }
 
             $props[$name] = $value;
-        }
-
-        if (!empty($props['routing'])) {
-            $this->assertTrue(is_callable($props['routing']));
         }
     }
 
@@ -54,8 +51,9 @@ class ApplicationTest extends TestCase
         $injector = $this->createMock(Injector::class);
         $configuration = $this->createMock(ConfigurationSet::class);
         $middleware = $this->createMock(MiddlewareSet::class);
+        $dispatching = $this->createMock(DispatchingSet::class);
 
-        $app = new Application($injector, $configuration, $middleware);
+        $app = new Application($injector, $configuration, $middleware, $dispatching);
 
         $this->assertApplication($app);
     }
@@ -98,28 +96,35 @@ class ApplicationTest extends TestCase
         $this->assertApplication($app);
     }
 
-    public function testSetRouting()
+    public function testSetDispatching()
     {
-        $app = new Application();
+        $data = [
+            function ($directory) {
+                return $directory;
+            },
+        ];
 
-        // Routing can be a closure ...
-        $app->setRouting(function () {
-        });
+        $dispatching = $this->createMock(DispatchingSet::class);
+        $dispatching
+            ->expects($this->once())
+            ->method('withValues')
+            ->with($data)
+            ->willReturn(clone $dispatching);
+
+        $app = new Application(null, null, null, $dispatching);
+        $app->setDispatching($data);
+
         $this->assertApplication($app);
 
-        // ... or a callback
-        $app->setRouting([$this, __FUNCTION__]);
-        $this->assertApplication($app);
     }
 
     public function testRun()
     {
         $injector = $this->createMock(Injector::class);
         $middleware = $this->createMock(MiddlewareSet::class);
+        $dispatching = $this->createMock(DispatchingSet::class);
         $config1 = $this->createMock(ConfigurationInterface::class);
         $config2 = $this->createMock(ConfigurationInterface::class);
-        $routing = function () {
-        };
 
         $config1
             ->expects($this->once())
@@ -146,7 +151,7 @@ class ApplicationTest extends TestCase
         $injector
             ->expects($this->once())
             ->method('prepare')
-            ->with(Directory::class, $routing)
+            ->with(Directory::class, $dispatching)
             ->willReturnSelf();
 
         $injector
@@ -154,9 +159,8 @@ class ApplicationTest extends TestCase
             ->method('execute')
             ->with(Relay::class);
 
-        $app = Application::build($injector, null, $middleware);
+        $app = Application::build($injector, null, $middleware, $dispatching);
         $app->setConfiguration([get_class($config1), $config2]);
-        $app->setRouting($routing);
         $app->run();
     }
 }
