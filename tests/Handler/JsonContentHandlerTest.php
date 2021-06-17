@@ -11,7 +11,7 @@ class JsonContentHandlerTest extends ContentHandlerTestCase
 {
     public function testInvokeWithApplicableMimeType()
     {
-        $request = $this->getRequest(
+        $request = $this->getRequestWithBody(
             $mime = 'application/json',
             json_encode($body = ['test' => 'json'])
         );
@@ -33,7 +33,7 @@ class JsonContentHandlerTest extends ContentHandlerTestCase
     {
         $this->expectException(HttpErrorException::class);
         $this->expectExceptionCode(400);
-        $request = $this->getRequest(
+        $request = $this->getRequestWithBody(
             $mime = 'application/json',
             $body = '{not json}'
         );
@@ -48,7 +48,7 @@ class JsonContentHandlerTest extends ContentHandlerTestCase
 
     public function testInvokeWithNonApplicableMimeType()
     {
-        $request = $this->getRequest(
+        $request = $this->getRequestWithBody(
             $mime = 'application/x-www-form-urlencoded',
             $body = http_build_query(['test' => 'form'], '', '&')
         );

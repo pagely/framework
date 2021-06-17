@@ -8,7 +8,7 @@ class FormContentHandlerTest extends ContentHandlerTestCase
 {
     public function testInvokeWithApplicableMimeType()
     {
-        $request = $this->getRequest(
+        $request = $this->getRequestWithBody(
             $mime = 'application/x-www-form-urlencoded',
             http_build_query($body = ['test' => 'form'], '', '&')
         );
@@ -29,7 +29,7 @@ class FormContentHandlerTest extends ContentHandlerTestCase
 
     public function testInvokeWithNonApplicableMimeType()
     {
-        $request = $this->getRequest(
+        $request = $this->getRequestWithBody(
             $mime = 'application/json',
             $body = json_encode((object) ['test' => 'json'])
         );
