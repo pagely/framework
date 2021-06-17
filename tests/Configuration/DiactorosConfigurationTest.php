@@ -21,8 +21,6 @@ class DiactorosConfigurationTest extends ConfigurationTestCase
     public function dataMapping()
     {
         return [
-            // https://github.com/relayphp/Relay.Relay/issues/25
-            [RequestInterface::class, ServerRequest::class],
             [ResponseInterface::class, Response::class],
             [ServerRequestInterface::class, ServerRequest::class]
         ];

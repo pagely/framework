@@ -7,14 +7,14 @@ use Equip\Contract\ActionInterface;
 use Equip\Directory;
 use Equip\Exception\DispatchingException;
 use Equip\Dispatching\DispatchingSet;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class DispatchingSetTest extends TestCase
 {
     public function testWithInvalidEntries()
     {
-        $this->setExpectedExceptionRegExp(
-            DispatchingException::class,
+        $this->expectException(DispatchingException::class);
+        $this->getExpectedExceptionMessageRegExp(
             '/Dispatcher .* is not invokable/i'
         );
 
@@ -42,7 +42,7 @@ class DispatchingSetTest extends TestCase
         $dispatching = new DispatchingSet($dispatchers);
         $directory = new Directory;
 
-        $prepared = $dispatching($directory, $this->getMock(Injector::class));
+        $prepared = $dispatching($directory, $this->createMock(Injector::class));
 
         $this->assertInstanceOf(Directory::class, $prepared);
         $this->assertNotSame($prepared, $directory);

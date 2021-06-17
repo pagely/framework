@@ -7,7 +7,7 @@ use Equip\Directory;
 use Equip\Exception\DirectoryException;
 use Equip\Input;
 use Equip\Structure\Dictionary;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class DirectoryTest extends TestCase
 {
