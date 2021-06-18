@@ -23,7 +23,7 @@ class EnvConfigurationTest extends ConfigurationTestCase
         $this->envfile = dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . '.env';
     }
 
-    protected function getConfigurations()
+    protected function getConfigurations(): array
     {
         return [
             new EnvConfiguration,

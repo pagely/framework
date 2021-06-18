@@ -17,7 +17,7 @@ use Laminas\Diactoros\ServerRequest;
 
 class ExceptionHandlerTest extends ConfigurationTestCase
 {
-    protected function getConfigurations()
+    protected function getConfigurations(): array
     {
         $env = $this->createMock(Env::class);
         $env->expects($this->atLeastOnce())

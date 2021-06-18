@@ -10,7 +10,7 @@ use Relay\Relay;
 
 class RelayConfigurationTest extends ConfigurationTestCase
 {
-    protected function getConfigurations()
+    protected function getConfigurations(): array
     {
         return [
             new AurynConfiguration,

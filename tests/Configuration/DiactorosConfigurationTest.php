@@ -11,7 +11,7 @@ use Laminas\Diactoros\ServerRequest;
 
 class DiactorosConfigurationTest extends ConfigurationTestCase
 {
-    protected function getConfigurations()
+    protected function getConfigurations(): array
     {
         return [
             new DiactorosConfiguration

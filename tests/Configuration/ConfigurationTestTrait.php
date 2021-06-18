@@ -6,25 +6,16 @@ use Auryn\Injector;
 
 trait ConfigurationTestTrait
 {
-    /**
-     * @var Injector
-     */
-    protected $injector;
+    protected Injector $injector;
 
-    /**
-     * @return array
-     */
-    abstract protected function getConfigurations();
+    abstract protected function getConfigurations(): array;
 
     public function setUp(): void
     {
         $this->applyConfigurations();
     }
 
-    /**
-     * @return void
-     */
-    protected function applyConfigurations()
+    protected function applyConfigurations(): void
     {
         $this->injector = new Injector;
 

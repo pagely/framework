@@ -16,18 +16,26 @@ use Closure;
 
 abstract class HandlerTestCase extends TestCase
 {
-    protected function t(ServerRequest $request, MiddlewareInterface $middleware, Closure $asserter, $assertType = 'request'): ResponseInterface
+    protected function t(ServerRequest $request, mixed $middleware, Closure $asserter, $assertType = 'request'): ResponseInterface
     {
         $chain = [];
 
+        if (!is_array($middleware)) {
+            $middleware = [$middleware];
+        }
+
         switch($assertType) {
         case 'request':
-            $chain[] = $middleware;
+            foreach($middleware as $m) {
+                $chain[] = $m;
+            }
             $chain[] = $asserter;
             break;
         case 'response':
             $chain[] = $asserter;
-            $chain[] = $middleware;
+            foreach($middleware as $m) {
+                $chain[] = $m;
+            }
             break;
         default:
             throw new \Exception("Unknown assertType: $assertType");

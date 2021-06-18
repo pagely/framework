@@ -7,14 +7,14 @@ use Equip\Configuration\AurynConfiguration;
 
 class AurynConfigurationTest extends ConfigurationTestCase
 {
-    protected function getConfigurations()
+    protected function getConfigurations(): array
     {
         return [
             new AurynConfiguration,
         ];
     }
 
-    public function testApply()
+    public function testApply(): void
     {
         // Injector is not a singleton
         $injector = $this->injector->make(Injector::class);

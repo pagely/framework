@@ -14,7 +14,7 @@ class ActionHandlerTest extends HandlerTestCase
 {
     use ConfigurationTestTrait;
 
-    protected function getConfigurations()
+    protected function getConfigurations(): array
     {
         return [
             new AurynConfiguration(),
