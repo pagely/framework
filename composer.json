@@ -16,8 +16,8 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.0",
-        "equip/config": "^1.0.2",
-        "equip/structure": "^1.0",
+        "pagely/config": "^2.0",
+        "pagely/structure": "^2.0",
         "filp/whoops": "^2.0",
         "lukasoppermann/http-status": "^2",
         "nikic/fast-route": "^1.0",
@@ -49,5 +49,15 @@
         "psr-4": {
             "EquipTests\\": "tests/"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pagely/structure.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/pagely/config.git"
+        }
+    ]
 }
