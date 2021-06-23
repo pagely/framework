@@ -7,6 +7,7 @@ use Equip\Configuration\ConfigurationSet;
 use Equip\Directory;
 use Equip\Dispatching\DispatchingSet;
 use Equip\Middleware\MiddlewareSet;
+use Psr\Http\Message\ServerRequestInterface;
 use Relay\Relay;
 
 final class Application
@@ -107,10 +108,12 @@ final class Application
     public function run($runner = Relay::class)
     {
         $this->configuration->apply($this->injector);
+        $this->injector->share($this->middleware);
+        $this->injector->prepare(Directory::class, $this->dispatching);
 
-        return $this->injector
-            ->share($this->middleware)
-            ->prepare(Directory::class, $this->dispatching)
-            ->execute($runner);
+        $relay = $this->injector->make($runner);
+        $request = $this->injector->make(ServerRequestInterface::class);
+
+        return $relay->handle($request);
     }
 }

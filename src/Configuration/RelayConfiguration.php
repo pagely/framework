@@ -12,8 +12,8 @@ class RelayConfiguration implements ConfigurationInterface
     public function apply(Injector $injector): void
     {
 
-        $factory = function (MiddlewareSet $queue, Resolver $resolver): Relay {
-            return new Relay($queue, $resolver);
+        $factory = function (MiddlewareSet $queue): Relay {
+            return new Relay($queue);
         };
 
         $injector->delegate(Relay::class, $factory);
